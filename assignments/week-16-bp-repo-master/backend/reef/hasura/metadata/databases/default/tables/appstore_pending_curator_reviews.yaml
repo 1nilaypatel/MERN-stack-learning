@@ -1,0 +1,60 @@
+table:
+  name: pending_curator_reviews
+  schema: appstore
+insert_permissions:
+  - role: appstore
+    permission:
+      check: {}
+      columns:
+        - approved
+        - authority
+        - contact
+        - created_at
+        - data
+        - id
+        - ix_data
+        - ix_keys
+        - processed
+        - signature
+        - type
+        - xnft
+select_permissions:
+  - role: appstore
+    permission:
+      columns:
+        - approved
+        - authority
+        - contact
+        - created_at
+        - data
+        - id
+        - ix_data
+        - ix_keys
+        - processed
+        - signature
+        - type
+        - xnft
+      filter: {}
+      allow_aggregations: true
+update_permissions:
+  - role: appstore
+    permission:
+      columns:
+        - approved
+        - authority
+        - contact
+        - created_at
+        - data
+        - id
+        - ix_data
+        - ix_keys
+        - processed
+        - signature
+        - type
+        - xnft
+      filter: {}
+      check: {}
+delete_permissions:
+  - role: appstore
+    permission:
+      filter: {}

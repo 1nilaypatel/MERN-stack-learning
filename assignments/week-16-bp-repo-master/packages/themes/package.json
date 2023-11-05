@@ -1,0 +1,26 @@
+{
+  "name": "@coral-xyz/themes",
+  "version": "0.0.1",
+  "module": "dist/esm/index.js",
+  "source": "src/index.tsx",
+  "react-native": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx --cache",
+    "lint:fix": "yarn run lint --fix"
+  },
+  "dependencies": {
+    "@mui/material": "^5.8.4",
+    "@mui/styles": "^5.8.4",
+    "@mui/system": "^5.8.4",
+    "react": "18.2.0"
+  },
+  "devDependencies": {
+    "eslint-config-custom": "*",
+    "typescript": "~4.9.3"
+  }
+}

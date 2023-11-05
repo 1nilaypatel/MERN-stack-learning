@@ -1,0 +1,56 @@
+<!-- This file is only used by the mobile app -->
+<html>
+  <head>
+    <title>service worker loader</title>
+    <style>
+      body {
+        background: red;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="module">
+      (function setup() {
+        //
+        // Kickoff the service worker.
+        //
+        navigator.serviceWorker
+          .register(new URL("./service-worker.ts", import.meta.url), {
+            type: "module",
+          })
+          .then((registration) => {
+            console.log("SERVICE WORKER: registered.", registration);
+          })
+          .catch((error) => {
+            console.log("SERVICE WORKER: registration failed:", error);
+          });
+
+        navigator.serviceWorker.addEventListener("install", (event) => {
+          console.log("SERVICE WORKER: installing");
+        });
+
+        navigator.serviceWorker.addEventListener("activate", (event) => {
+          console.log("SERVICE WORKER: activating");
+        });
+
+        //
+        // Receive messages from the service worker..
+        //
+        navigator.serviceWorker.onmessage = (event) => {
+          console.log("SERVICE WORKER: message received");
+          window.ReactNativeWebView?.postMessage(JSON.stringify(event.data));
+        };
+
+        //
+        // Send a message to the background service worker.
+        //
+        window.postMessageToBackgroundViaWebview = (rawData) => {
+          console.log("SERVICE WORKER: message sent");
+          navigator.serviceWorker.controller.postMessage(rawData);
+        };
+
+        document.querySelector("body").style.background = "green";
+      })();
+    </script>
+  </body>
+</html>

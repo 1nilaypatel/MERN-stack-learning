@@ -1,0 +1,40 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [
+        "build/**",
+        "dist/**",
+        "packages/wallet-standard/lib/**",
+        "node_modules/.cache/metro/**"
+      ],
+      "env": [
+        "BACKPACK_CONFIG_VERSION",
+        "BACKPACK_CONFIG_LOG_LEVEL",
+        "BACKPACK_FEATURE_LIGHT_MODE",
+        "BACKPACK_FEATURE_POP_MODE",
+        "APP_ENV"
+      ]
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "inputs": ["**/*.{ts,tsx,js,jsx}"]
+    },
+    "start": {
+      "dependsOn": ["^build"]
+    },
+    "lint": {
+      "cache": false,
+      "outputs": []
+    },
+    "lint:fix": {
+      "cache": false,
+      "outputs": []
+    },
+    "dev": {
+      "cache": false,
+      "outputs": []
+    }
+  }
+}

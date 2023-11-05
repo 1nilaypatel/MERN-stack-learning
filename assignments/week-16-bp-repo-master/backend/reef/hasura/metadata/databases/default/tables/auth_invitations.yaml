@@ -1,0 +1,54 @@
+table:
+  name: invitations
+  schema: auth
+object_relationships:
+  - name: user
+    using:
+      foreign_key_constraint_on:
+        column: invitation_id
+        table:
+          name: users
+          schema: auth
+insert_permissions:
+  - role: auth_worker
+    permission:
+      check: {}
+      columns:
+        - data
+        - created_at
+        - id
+  - role: invites_worker
+    permission:
+      check: {}
+      columns:
+        - id
+        - created_at
+        - data
+  - role: mod
+    permission:
+      check: {}
+      columns:
+        - data
+        - id
+select_permissions:
+  - role: auth_worker
+    permission:
+      columns:
+        - data
+        - created_at
+        - id
+      filter: {}
+  - role: invites_worker
+    permission:
+      columns:
+        - id
+        - created_at
+        - data
+      filter: {}
+  - role: mod
+    permission:
+      columns:
+        - data
+        - created_at
+        - id
+      filter: {}
