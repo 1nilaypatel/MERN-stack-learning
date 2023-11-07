@@ -24,12 +24,11 @@ const port = 3000
 // }
 
 // app.use(middleWare1); // this initializes our use of middleWare before the main function is called
-
 app.use(bodyParser.json()); // added a mew middleWare to extract the body when we do console.log(req.body)
 
 
 function handleFirstRequest(req, res){
-    // let counter = req.query.counter; // this is via query parameters
+    let counter = req.query.counter; // this is via query parameters
 
     // console.log(req.headers);
     // // in post man header section we clear url till handeSum and key -> counter and value -> 4
@@ -37,15 +36,39 @@ function handleFirstRequest(req, res){
 
     // console.log(req.body);
     // for this in body in postman click on raw -> JSON
-    let counter = req.body.counter; // this is via body which we will use most of the time
+    // let counter = req.body.counter; // this is via body which we will use most of the time
 
     let calculatedSum = calculateSum(counter);
-    var ans = "The sum is " + calculatedSum;
-    res.send(ans);
+    let calculatedMul = calculateMul(counter);
+
+    let answerObject = {
+        sum: calculatedSum, 
+        multiply: calculatedMul
+    };
+
+    res.send(answerObject); // returning the data JSON object so that it's easy to parse later if needed
+
+    // var ans = "The sum is " + calculatedSum; 
+    // res.send(ans); // here the ans sent is returning a SIMPLE TEXT
 }
 
-// app.get('/handleSum', handleFirstRequest); // this can be accessed by the browser
-app.post('/handleSum', handleFirstRequest); // this we check in postman 
+// function givePage(req, res){
+//     // BOTH WAYS works
+//     res.sendFile(__dirname + "/index.html");
+//     // res.send(`<head>
+//     //             <title>
+//     //                 Hello from page
+//     //             </title>
+//     //         </head>
+//     //         <body>
+//     //             <b>kjbljiblijbkjnknjrgethrhrhrh</b>
+//     //         </body>`)
+
+// }
+// app.get('/', givePage); // sending HTML
+
+app.get('/handleSum', handleFirstRequest); // this can be accessed by the browser
+// app.post('/handleSum', handleFirstRequest); // this we check in postman 
 
 
 app.listen(port, () => {
@@ -63,5 +86,10 @@ function calculateSum(num){
     return sum;
 }
 
-// let calculatedSum = calculateSum(100);
-// console.log(calculatedSum);
+function calculateMul(num){
+    let answer = 1;
+    for(let i = 1; i <= num; i++){
+        answer *= i;
+    }
+    return answer;
+}
