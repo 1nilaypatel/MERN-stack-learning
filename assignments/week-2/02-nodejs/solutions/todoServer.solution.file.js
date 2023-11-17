@@ -24,14 +24,14 @@ function removeAtIndex(arr, index) {
 app.get('/todos', (req, res) => {
   fs.readFile("todos.json", "utf8", (err, data) => {
     if (err) throw err;
-    res.json(JSON.parse(data));
+    res.json(JSON.parse(data || '[]')); // take care when the file is empty
   });
 });
 
 app.get('/todos/:id', (req, res) => {
   fs.readFile("todos.json", "utf8", (err, data) => {
     if (err) throw err;
-    const todos = JSON.parse(data);
+    const todos = JSON.parse(data || '[]');
     const todoIndex = findIndex(todos, parseInt(req.params.id));
     if (todoIndex === -1) {
       res.status(404).send();
@@ -49,7 +49,7 @@ app.post('/todos', (req, res) => {
   };
   fs.readFile("todos.json", "utf8", (err, data) => {
     if (err) throw err;
-    const todos = JSON.parse(data);
+    const todos = JSON.parse(data || '[]');
     todos.push(newTodo);
     fs.writeFile("todos.json", JSON.stringify(todos), (err) => {
       if (err) throw err;
@@ -61,7 +61,7 @@ app.post('/todos', (req, res) => {
 app.put('/todos/:id', (req, res) => {
   fs.readFile("todos.json", "utf8", (err, data) => {
     if (err) throw err;
-    const todos = JSON.parse(data);
+    const todos = JSON.parse(data || '[]');
     const todoIndex = findIndex(todos, parseInt(req.params.id));
     if (todoIndex === -1) {
       res.status(404).send();
@@ -81,10 +81,9 @@ app.put('/todos/:id', (req, res) => {
 });
 
 app.delete('/todos/:id', (req, res) => {
-
   fs.readFile("todos.json", "utf8", (err, data) => {
     if (err) throw err;
-    const todos = JSON.parse(data);
+    const todos = JSON.parse(data || '[]');
     const todoIndex = findIndex(todos, parseInt(req.params.id));
     if (todoIndex === -1) {
       res.status(404).send();
@@ -102,5 +101,7 @@ app.delete('/todos/:id', (req, res) => {
 app.use((req, res, next) => {
   res.status(404).send();
 });
+
+// app.listen(3000);
 
 module.exports = app;

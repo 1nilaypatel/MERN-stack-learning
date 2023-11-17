@@ -39,11 +39,192 @@
 
   Testing the server - run `npm run test-todoServer` command in terminal
  */
-const express = require('express');
-const bodyParser = require('body-parser');
 
-const app = express();
 
-app.use(bodyParser.json());
 
-module.exports = app;
+  const express = require('express');
+  const bodyParser = require('body-parser');
+  const path = require('path');
+  const app = express();
+  
+  app.use(bodyParser.json());
+  
+  let todos = [];
+  
+  function findIndex(arr, id){
+    for(let i = 0; i < arr.length; i++){
+      if(id === arr[i].id) return i;
+    }
+    return -1;
+  }
+  
+  function deleteIndex(arr, index){
+    let newArray = [];
+    for(let i = 0; i < arr.length; i++){
+      if(i !== index) newArray.push(arr[i]);
+    }
+    return newArray;
+  }
+  
+  app.get('/todos', (req, res) => {
+    res.status(200).json(todos);
+  });
+  
+  app.get('/todos/:id', (req, res) => {
+
+    // findIndex is a JavaScript function that finds the 1st index to the condition matching else returns -1
+    // const todoIndex = todos.findIndex(t => t.id === parseInt(req.params.id));
+
+    const todoIndex = findIndex(todos, parseInt(req.params.id));
+    if(todoIndex === -1){
+      res.status(404).json({error: '404 Not Found'});
+    }else{
+      res.status(200).json(todos[todoIndex]);
+    }
+  });
+  
+  app.post('/todos', (req, res) => {
+    const newTodo = {
+      id: Math.floor(Math.random() * 1000000), // generate random unique id
+      title: req.body.title,
+      description: req.body.description
+    };
+    todos.push(newTodo);
+    res.status(201).json(newTodo);
+  });
+  
+  app.put('/todos/:id', (req, res) => {
+    const todoIndex = findIndex(todos, parseInt(req.params.id));
+    if(todoIndex === -1){
+      res.status(404).json({error: '404 Not Found'});
+    }else{
+      todos[todoIndex].title = req.body.title;
+      todos[todoIndex].description = req.body.description;
+      res.status(200).json(todos[todoIndex]);
+    }
+  });
+  
+  app.delete('/todos/:id', (req, res) => {
+    const todoIndex = findIndex(todos, parseInt(req.params.id));
+    if(todoIndex === -1){
+      res.status(404).json({error: '404 Not Found'});
+    }else{
+      todos = deleteIndex(todos, todoIndex);
+      // todos.splice(todoIndex, 1);
+      res.status(200).send();
+    }
+  });
+
+
+
+  app.get('/', (req, res) => {
+    // const path = require('path'); added on top
+      res.sendFile(path.join(__dirname, "index.html"));
+  });
+
+
+  
+  // for all other routes , return 404
+  app.use((req, res, next) => {
+    res.status(404).json({error: '404 Not Found'});
+  });
+  
+  app.listen(3000);
+  
+  // module.exports = app;
+
+
+
+
+
+// // HARD TODO storing it in a file
+
+// const express = require('express');
+// const bodyParser = require('body-parser');
+// const fs = require("fs");
+
+// const app = express();
+
+// app.use(bodyParser.json());
+
+// app.get('/todos', (req, res) => {
+//   fs.readFile("todos.json", "utf8", (err, data) => {
+//     if (err) throw err;
+//     res.json(JSON.parse(data || '[]')); // take care when the file is empty
+//   });
+// });
+
+// app.get('/todos/:id', (req, res) => {
+//   fs.readFile("todos.json", "utf8", (err, data) => {
+//     if (err) throw err;
+//     let todos = JSON.parse(data || '[]');
+//     // const todoIndex = findIndex(todos, parseInt(req.params.id));
+//     const todoIndex = todos.findIndex(t => t.id === parseInt(req.params.id));
+//     if (todoIndex === -1) {
+//       res.status(404).send();
+//     } else {
+//       res.json(todos[todoIndex]);
+//     }
+//   });
+// });
+
+// app.post('/todos', (req, res) => {
+//   const newTodo = {
+//     id: Math.floor(Math.random() * 1000000), // unique random id
+//     title: req.body.title,
+//     description: req.body.description
+//   };
+//   fs.readFile("todos.json", "utf8", (err, data) => {
+//     if (err) throw err;
+//     let todos = JSON.parse(data || '[]');
+//     todos.push(newTodo);
+//     fs.writeFile("todos.json", JSON.stringify(todos), (err) => {
+//       if (err) throw err;
+//       res.status(201).json(newTodo);
+//     });
+//   });
+// });
+
+// app.put('/todos/:id', (req, res) => {
+//   fs.readFile("todos.json", "utf8", (err, data) => {
+//     if (err) throw err;
+//     let todos = JSON.parse(data || '[]');
+//     const todoIndex = todos.findIndex(t => t.id === parseInt(req.params.id));
+//     if (todoIndex === -1) {
+//       res.status(404).send();
+//     } else {
+//       todos[todoIndex].title = req.body.title;
+//       todos[todoIndex].description = req.body.description;
+//       fs.writeFile("todos.json", JSON.stringify(todos), (err) => {
+//         if (err) throw err;
+//         res.status(200).json(todos[todoIndex]);
+//       });
+//     }
+//   });
+// });
+
+// app.delete('/todos/:id', (req, res) => {
+//   fs.readFile("todos.json", "utf8", (err, data) => {
+//     if (err) throw err;
+//     let todos = JSON.parse(data || '[]');
+//     const todoIndex = todos.findIndex(t => t.id === parseInt(req.params.id));
+//     if (todoIndex === -1) {
+//       res.status(404).send();
+//     } else {
+//       todos.splice(todoIndex, 1);
+//       fs.writeFile("todos.json", JSON.stringify(todos), (err) => {
+//         if (err) throw err;
+//         res.status(200).send();
+//       });
+//     }
+//   });
+// });
+
+// // for all other routes, return 404
+// app.use((req, res, next) => {
+//   res.status(404).send();
+// });
+
+// app.listen(3000);
+
+// // module.exports = app;
