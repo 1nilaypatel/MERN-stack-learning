@@ -1,11 +1,11 @@
-/* 
-steps 
--> npm init -y
--> make index.js
--> npm install express
--> go on expressjs site and bring basic boiler code 
--> npm install body-parser
-*/
+// /* 
+// steps 
+// -> npm init -y
+// -> make index.js
+// -> npm install express
+// -> go on expressjs site and bring basic boiler code 
+// -> npm install body-parser
+// */
 
 
 const express = require('express')
@@ -93,3 +93,14 @@ function calculateMul(num){
     }
     return answer;
 }
+
+
+
+// req.params - Route Parameters:
+// req.params is used to extract values from the named route parameters in the URL. Route parameters are part of the URL path and are defined in the route pattern. For example, in the route /users/:id, id is a route parameter.
+// Example URL: /users/123
+
+
+// req.query - Query Parameters:
+// req.query is used to extract values from the query string of the URL. Query parameters are usually appended to the URL after a ? and separated by &. For example, in the URL /search?q=query&sort=asc, q and sort are query parameters.
+// Example URL: /search?q=query&sort=asc
