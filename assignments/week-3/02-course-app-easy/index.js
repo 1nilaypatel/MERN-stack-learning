@@ -27,6 +27,7 @@ const userAuthentication = (req, res, next) => {
   if (user) {
     // By doing this, the user object is attached to the req object, making it accessible in subsequent middleware functions or route handlers.
     req.user = user;
+    next();
   } else {
     res.status(403).json({ message: 'User authentication failed' });
   }
@@ -90,15 +91,21 @@ app.get('/admin/courses', adminAuthentication, (req, res) => {
 app.post('/users/signup', (req, res) => {
   // logic to sign up user
 
-  // Spread Syntax ({...}) is used for object or array literals and allows for the creation of shallow copies.
-  const user = {...req.body, purchasedCourses: []}; // better way
-  // const user = {
-  //   username: req.body.username,
-  //   password: req.body.password,
-  //   purchasedCourses: []
-  // }
-  USERS.push(user);
-  res.json({ message: 'User created successfully' });
+  const userr = req.body;
+  const existingUser = USERS.find(u => u.username === userr.username);
+  if (existingUser) {
+    res.status(403).json({ message: 'User already exists' });
+  } else {
+    // Spread Syntax ({...}) is used for object or array literals and allows for the creation of shallow copies.
+    const user = {...req.body, purchasedCourses: []}; // better way
+    // const user = {
+    //   username: req.body.username,
+    //   password: req.body.password,
+    //   purchasedCourses: []
+    // }
+    USERS.push(user);
+    res.json({ message: 'User created successfully'});
+  }
 });
 
 app.post('/users/login', userAuthentication, (req, res) => {
@@ -124,7 +131,7 @@ app.get('/users/courses', userAuthentication, (req, res) => {
 app.post('/users/courses/:courseId', userAuthentication, (req, res) => {
   // logic to purchase a course
 
-  const courseId = Number(req.params.courseId);
+  const courseId = parseInt(req.params.courseId);
   const course = COURSES.find(c => c.id === courseId && c.published);
   if (course) {
     // find the user in the global user array
@@ -138,13 +145,13 @@ app.post('/users/courses/:courseId', userAuthentication, (req, res) => {
   }
 });
 
-app.get('/users/purchasedCourses', (req, res) => {
+app.get('/users/purchasedCourses', userAuthentication, (req, res) => {
   // logic to view purchased courses
 
   // filters the COURSES array to retrieve only the courses that have their id included in the purchasedCourses array of the req.user object
   // Arrow Function (c => req.user.purchasedCourses.includes(c.id)): This is the callback function passed to the filter method. It takes an individual course object (c) and returns true or false based on whether the id of the course is included in the purchasedCourses array of the req.user object.
-  const purchasedCourses = COURSES.filter(c => req.user.purchasedCourses.includes(c.id)); // better way
-  res.json({ purchasedCourses });
+  const purchasedFullCourses = COURSES.filter(c => req.user.purchasedCourses.includes(c.id)); // better way
+  res.json({ purchasedFullCourses });
 
   // // We need to extract the complete course object from COURSES
   // // which have ids which are present in req.user.purchasedCourses
