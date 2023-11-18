@@ -83,7 +83,8 @@ app.post('/users/login', userAuthentication, (req, res) => {
 });
 
 app.get('/users/courses', userAuthentication, (req, res) => {
-  // COURSES.filter(c => c.published)
+  // // COURSES.filter(c => c.published)
+  // res.json({ courses: COURSES.filter(c => c.published) });
   let filteredCourses = [];
   for (let i = 0; i<COURSES.length; i++) {
     if (COURSES[i].published) {
@@ -97,6 +98,10 @@ app.post('/users/courses/:courseId', userAuthentication, (req, res) => {
   const courseId = Number(req.params.courseId);
   const course = COURSES.find(c => c.id === courseId && c.published);
   if (course) {
+    // find the user in the global user array
+    // update the user object
+    // remove the old user object to the global USER array.
+    // add the new user object to the global USER array.
     req.user.purchasedCourses.push(courseId);
     res.json({ message: 'Course purchased successfully' });
   } else {
@@ -106,16 +111,16 @@ app.post('/users/courses/:courseId', userAuthentication, (req, res) => {
 
 app.get('/users/purchasedCourses', userAuthentication, (req, res) => {
   // const purchasedCourses = COURSES.filter(c => req.user.purchasedCourses.includes(c.id));
+
   // We need to extract the complete course object from COURSES
   // which have ids which are present in req.user.purchasedCourses
-  var purchasedCourseIds = req.user.purchasedCourses; [1, 4];
+  var purchasedCourseIds = req.user.purchasedCourses;
   var purchasedCourses = [];
   for (let i = 0; i<COURSES.length; i++) {
-    if (purchasedCourseIds.indexOf(COURSES[i].id) !== -1) {
+    if (purchasedCourseIds.indexOf(COURSES[i].id) !== -1) { // is just like checking it in set if that element exists
       purchasedCourses.push(COURSES[i]);
     }
-  }
-
+  } 
   res.json({ purchasedCourses });
 });
 
