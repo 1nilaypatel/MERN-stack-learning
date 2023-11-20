@@ -11,6 +11,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 let bodyParser = require('body-parser')
+const fs = require("fs");
 const app = express();
 const port = 3000;
 
@@ -34,12 +35,29 @@ try{
   COURSES = [];
 }
 
-const secretKey = n1laypat2l;
-const authenticateJwt = (req, res, next) => {
+const adminSecretKey = "n1laypat2l";
+const adminAuthenticateJwt = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if(authHeader){
     const token = authHeader.split(' ')[1];
-    jwt.verify(token, secretKey, (err, user) => {
+    jwt.verify(token, adminSecretKey, (err, user) => {
+      if(err){
+        return res.sendStatus(403);
+      }
+      req.user = user;
+      next();
+    });
+  }else{
+    res.sendStatus(401);
+  }
+}
+
+const userSecretKey = "pat2ln1lay";
+const userAuthenticateJwt = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if(authHeader){
+    const token = authHeader.split(' ')[1];
+    jwt.verify(token, userSecretKey, (err, user) => {
       if(err){
         return res.sendStatus(403);
       }
@@ -63,7 +81,7 @@ app.post('/admin/signup', (req, res) => {
     const newAdmin = {username, password};
     ADMINS.push(newAdmin);
     fs.writeFileSync('admins.json', JSON.stringify(ADMINS)); // writing using node.js file system SYNCHRONOUS model 
-    const token = jwt.sign({username, role: 'admin'}, secretKey, {expiresIn: '1h'}); // generating JWT and also specifying roles properties
+    const token = jwt.sign({username, role: 'admin'}, adminSecretKey, {expiresIn: '1h'}); // generating JWT and also specifying roles properties
     res.json({ message: 'Admin created successfully', token });
   }
 });
@@ -74,14 +92,14 @@ app.post('/admin/login', (req, res) => {
   const { username, password } = req.headers;
   const admin = ADMINS.find(a => a.username === username && a.password === password);
   if (admin) {
-    const token = jwt.sign({ username, role: 'admin' }, SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ username, role: 'admin' }, adminSecretKey, { expiresIn: '1h' });
     res.json({ message: 'Logged in successfully', token });
   } else {
     res.status(403).json({ message: 'Invalid username or password' });
   }
 });
 
-app.post('/admin/courses', authenticateJwt, (req, res) => {
+app.post('/admin/courses', adminAuthenticateJwt, (req, res) => {
   // logic to create a course
 
   const course = req.body;
@@ -91,7 +109,7 @@ app.post('/admin/courses', authenticateJwt, (req, res) => {
   res.json({ message: 'Course created successfully', courseId: course.id });
 });
 
-app.put('/admin/courses/:courseId', authenticateJwt, (req, res) => {
+app.put('/admin/courses/:courseId', adminAuthenticateJwt, (req, res) => {
   // logic to edit a course
 
   const course = COURSES.find(c => c.id === parseInt(req.params.courseId));
@@ -104,7 +122,7 @@ app.put('/admin/courses/:courseId', authenticateJwt, (req, res) => {
   }
 });
 
-app.get('/admin/courses', authenticateJwt, (req, res) => {
+app.get('/admin/courses', adminAuthenticateJwt, (req, res) => {
   // logic to get all courses
 
   res.json({ courses: COURSES });
@@ -122,7 +140,7 @@ app.post('/users/signup', (req, res) => {
     const newUser = { username, password };
     USERS.push(newUser);
     fs.writeFileSync('users.json', JSON.stringify(USERS));
-    const token = jwt.sign({ username, role: 'user' }, SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ username, role: 'user' }, userSecretKey, { expiresIn: '1h' });
     res.json({ message: 'User created successfully', token });
   }
 });
@@ -133,20 +151,20 @@ app.post('/users/login', (req, res) => {
   const {username, password} = req.headers;
   const user = USERS.find(u => u.username === username && u.password === password);
   if (user) {
-    const token = jwt.sign({ username, role: 'user' }, SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ username, role: 'user' }, userSecretKey, { expiresIn: '1h' });
     res.json({ message: 'Logged in successfully', token });
   } else {
     res.status(403).json({ message: 'Invalid username or password' });
   }
 });
 
-app.get('/users/courses', authenticateJwt, (req, res) => {
+app.get('/users/courses', userAuthenticateJwt, (req, res) => {
   // logic to list all courses
 
   res.json({ courses: COURSES });
 });
 
-app.post('/users/courses/:courseId', authenticateJwt, (req, res) => {
+app.post('/users/courses/:courseId', userAuthenticateJwt, (req, res) => {
   // logic to purchase a course
 
   const course = COURSES.find(c => c.id === parseInt(req.params.courseId));
@@ -167,7 +185,7 @@ app.post('/users/courses/:courseId', authenticateJwt, (req, res) => {
   }
 });
 
-app.get('/users/purchasedCourses', authenticateJwt, (req, res) => {
+app.get('/users/purchasedCourses', userAuthenticateJwt, (req, res) => {
   // logic to view purchased courses
 
   const user = USERS.find(u => u.username === req.user.username);
@@ -178,6 +196,6 @@ app.get('/users/purchasedCourses', authenticateJwt, (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log('Server is listening on port 3000');
+app.listen(port, () => {
+  console.log(`Server is listening on port ${port}`);
 });

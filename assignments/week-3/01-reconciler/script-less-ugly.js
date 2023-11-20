@@ -1,9 +1,11 @@
+// logic to find a difference and then updating the array instead of fully clearing and adding again 
 
 function createDomElements(data) {
   var parentElement = document.getElementById("mainArea");
 
   // Get the current children of the parent element and convert it to an array
   var currentChildren = Array.from(parentElement.children);
+  console.log(currentChildren);
 
   let added = 0, deleted = 0, updated = 0;
   // Process each item in the data array
@@ -51,9 +53,9 @@ function createDomElements(data) {
     parentElement.removeChild(child);
   });
 
-  console.log(added);
-  console.log(updated);
-  console.log(deleted);
+  console.log("added: " + added);
+  console.log("upadated: " + updated);
+  console.log("deleted: " + deleted);
 }
 
 
@@ -69,3 +71,19 @@ window.setInterval(() => {
 
   createDomElements(todos)
 }, 5000)
+
+
+
+// // understand this
+// var existingChild = currentChildren.find(function(child) {
+//   return child.dataset.id === String(item.id);
+// });
+
+// currentChildren = currentChildren.filter(function(child) {
+//   return child !== existingChild;
+// });
+
+// currentChildren.forEach(function(child) {
+//   deleted++;
+//   parentElement.removeChild(child);
+// });

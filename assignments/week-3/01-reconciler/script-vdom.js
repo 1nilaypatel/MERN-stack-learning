@@ -81,3 +81,11 @@ window.setInterval(() => {
 }, 5000);
 
 
+// // understnd this
+// vDOM = data.map(item => {
+//   return {
+//     id: item.id,
+//     title: item.title,
+//     description: item.description
+//   };
+// });

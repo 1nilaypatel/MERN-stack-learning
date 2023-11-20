@@ -35,7 +35,7 @@ function handleFirstRequest(req, res){
     // let counter = req.headers.counter; // this is via headers
 
     // console.log(req.body);
-    // for this in body in postman click on raw -> JSON
+    // // for this in body in postman click on raw -> JSON
     // let counter = req.body.counter; // this is via body which we will use most of the time
 
     let calculatedSum = calculateSum(counter);
@@ -46,10 +46,10 @@ function handleFirstRequest(req, res){
         multiply: calculatedMul
     };
 
-    res.send(answerObject); // returning the data JSON object so that it's easy to parse later if needed
+    // res.send(answerObject); // returning the data JSON object so that it's easy to parse later if needed
 
-    // var ans = "The sum is " + calculatedSum; 
-    // res.send(ans); // here the ans sent is returning a SIMPLE TEXT
+    var ans = "The sum is " + calculatedSum; 
+    res.send(ans); // here the ans sent is returning a SIMPLE TEXT
 }
 
 // function givePage(req, res){

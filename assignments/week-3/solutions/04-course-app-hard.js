@@ -1,13 +1,3 @@
-// /* 
-// steps 
-// -> npm init -y
-// -> make index.js
-// -> npm install express
-// -> go on expressjs site and bring basic boiler code 
-// -> npm install body-parser
-// -> npm install jsonwebtoken
-// */
-
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
