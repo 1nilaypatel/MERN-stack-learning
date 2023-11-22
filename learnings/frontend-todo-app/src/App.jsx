@@ -1,35 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useEffect } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+// creating custom hooks
+function useTodos(){
+  const [todos , setTodos] = React.useState([]);
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+  React.useEffect(() => {
+    fetch("http://localhost:3000/todos", {
+      method: "GET", // is there by DEFAULT
+    }).then((response) => {
+      response.json().then((data) => {
+        console.log(data);
+        setTodos(data);
+      });
+    });
+  }, []);
+
+  // this is to make it appear real time as we add new todos
+  setInterval(() => {
+    fetch("http://localhost:3000/todos", {
+      method: "GET",
+    }).then((response) => {
+      response.json().then((data) => {
+        console.log(data);
+        setTodos(data);
+      })
+    })
+  }, 1000);
+
+  return todos;
 }
 
-export default App
+function App() {
+  const todos = useTodos();
+
+  return (
+    <div>
+      {todos.map((todo) => {
+        return <Todo title = {todo.title} description = {todo.description}></Todo>
+      })}
+    </div>
+  )
+
+  function Todo(props){
+    return <div>
+    {props.title}
+    {props.description}
+    <button>Delete</button>
+    <br/>
+  </div>
+  }
+}
+
+export default App;
