@@ -71,19 +71,3 @@ window.setInterval(() => {
 
   createDomElements(todos)
 }, 5000)
-
-
-
-// // understand this
-// var existingChild = currentChildren.find(function(child) {
-//   return child.dataset.id === String(item.id);
-// });
-
-// currentChildren = currentChildren.filter(function(child) {
-//   return child !== existingChild;
-// });
-
-// currentChildren.forEach(function(child) {
-//   deleted++;
-//   parentElement.removeChild(child);
-// });

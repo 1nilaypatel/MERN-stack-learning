@@ -84,3 +84,24 @@ window.setInterval(() => {
 }, 1000);
 
 
+// // understand this
+// var existingChild = currentChildren.find(function(child) {
+//   return child.dataset.id === String(item.id);
+// });
+
+// currentChildren = currentChildren.filter(function(child) {
+//   return child !== existingChild;
+// });
+
+// currentChildren.forEach(function(child) {
+//   deleted++;
+//   parentElement.removeChild(child);
+// });
+
+// vDOM = data.map(item => {
+//   return {
+//     id: item.id,
+//     title: item.title,
+//     description: item.description
+//   };
+// });

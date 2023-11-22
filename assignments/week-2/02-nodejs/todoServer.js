@@ -73,9 +73,9 @@
   app.get('/todos/:id', (req, res) => {
 
     // findIndex is a JavaScript function that finds the 1st index to the condition matching else returns -1
-    // const todoIndex = todos.findIndex(t => t.id === parseInt(req.params.id));
+    const todoIndex = todos.findIndex(t => t.id === parseInt(req.params.id));
 
-    const todoIndex = findIndex(todos, parseInt(req.params.id));
+    // const todoIndex = findIndex(todos, parseInt(req.params.id));
     if(todoIndex === -1){
       res.status(404).json({error: '404 Not Found'});
     }else{
