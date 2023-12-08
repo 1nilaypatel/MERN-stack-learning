@@ -12,12 +12,14 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 let bodyParser = require('body-parser')
 const fs = require("fs");
+const cors = require("cors");
 const app = express();
 const port = 3000;
 
 
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(cors());
 
 let ADMINS = [];
 let USERS = [];

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 // creating custom hooks
 function useTodos(){
-  const [todos , setTodos] = React.useState([]);
+  const [todos, setTodos] = React.useState([]);
 
   React.useEffect(() => {
     fetch("http://localhost:3000/todos", {
@@ -43,11 +43,11 @@ function App() {
 
   function Todo(props){
     return <div>
-    {props.title}
-    {props.description}
-    <button>Delete</button>
-    <br/>
-  </div>
+      {props.title}
+      {props.description}
+      <button>Delete</button>
+      <br/>
+    </div>
   }
 }
 

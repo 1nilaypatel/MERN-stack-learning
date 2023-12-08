@@ -125,7 +125,7 @@ function UpdateCard(props) {
 }
 
 function CourseCard(props) {
-    console.log("hi there from update card")
+    console.log("hi there from course card")
     const course = props.course;
     return <div style={{display: "flex", justifyContent: "center"}}>
      <Card style={{

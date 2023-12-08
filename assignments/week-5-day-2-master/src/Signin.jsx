@@ -1,6 +1,4 @@
-import Button from '@mui/material/Button';
-import TextField from "@mui/material/TextField";
-import {Card, Typography} from "@mui/material";
+import {Card, Typography, Button, TextField} from "@mui/material";
 
 function Signin() {
     return <div>
@@ -14,8 +12,11 @@ function Signin() {
                 Welcome back. Sign in below
                 </Typography>
             </div>
-        <div style={{display: "flex", justifyContent: "center"}}>
-            <Card varint={"outlined"} style={{width: 400, padding: 20}}>
+        <div style={{
+            display: "flex", 
+            justifyContent: "center"
+        }}>
+            <Card variant={"outlined"} style={{width: 400, padding: 20}}>
                 <TextField
                     fullWidth={true}
                     id="outlined-basic"
