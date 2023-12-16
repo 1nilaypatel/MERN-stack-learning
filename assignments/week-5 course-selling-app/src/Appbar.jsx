@@ -10,15 +10,17 @@ function Appbar(){
         fetch("http://localhost:3000/admin/me", {
             method: "GET", 
             headers: {
-                "Authorization": "Bearer" + localStorage.getItem("token")
+                "Authorization": "Bearer " + localStorage.getItem("token")
             }
         }).then((response) => {
             response.json().then((data) => {
-                if(data.userEmail){
-                    setUserEmail(data.userEmail)
+                // console.log(data)
+                if(data.username){
+                    setUserEmail(data.username)
                 }
             });
         });
+        console.log("token - " + localStorage.getItem("token"));
     }, []);
 
     if(userEmail){

@@ -8,7 +8,7 @@ function Courses(){
         fetch("http://localhost:3000/admin/courses", {
             method: "GET",
             headers: {
-                "Authorization": "Bearer" + localStorage.getItem("token")
+                "Authorization": "Bearer " + localStorage.getItem("token")
             }
         }).then((response) => {
             response.json().then((data) => {
@@ -17,7 +17,7 @@ function Courses(){
         });
     }, []);
 
-    return <div>
+    return <div style={{display: "flex", flexWrap: "wrap", justifyContent: "center"}}>
         {courses.map(course => {
             return <Course course={course} />
         })}

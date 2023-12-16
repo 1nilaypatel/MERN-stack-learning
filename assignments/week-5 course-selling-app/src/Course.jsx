@@ -11,7 +11,7 @@ function Course(){
         fetch("http://localhost:3000/admin/courses", {
             method: "GET",
             headers: {
-                "Authorization": "Bearer" + localStorage.getItem("token")
+                "Authorization": "Bearer " + localStorage.getItem("token")
             }
         }).then((response) => {
             response.json().then((data) => {
@@ -54,6 +54,8 @@ export function CourseCard(props){
 }
 
 export function UpdateCard(props){
+    console.log("hi there from update card")
+
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
@@ -104,7 +106,7 @@ export function UpdateCard(props){
                 variant={"contained"} 
                 size={"large"}
                 onClick={() => {
-                    fetch("http://localhost:3000/admin/courses" + props.course.id, {
+                    fetch("http://localhost:3000/admin/courses/" + props.course.id, {
                         method: "PUT",
                         body: JSON.stringify({
                             title: title,
@@ -128,7 +130,7 @@ export function UpdateCard(props){
                                         description: description,
                                         imageLink: image,
                                         price: price,
-                                    })
+                                    });
                                 }else{
                                     updatedCourses.push(props.courses[i]);
                                 }

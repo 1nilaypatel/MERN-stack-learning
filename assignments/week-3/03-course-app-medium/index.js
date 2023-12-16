@@ -71,6 +71,10 @@ const userAuthenticateJwt = (req, res, next) => {
   }
 }
 
+app.get('/admin/me', adminAuthenticateJwt, (req, res) => {
+  res.json({username: req.user.username})
+})
+
 // Admin routes
 app.post('/admin/signup', (req, res) => {
   // logic to sign up admin

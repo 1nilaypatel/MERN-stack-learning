@@ -3,9 +3,9 @@ import { useState } from 'react';
 import Signup from "./Signup.jsx";
 import Signin from "./Signin.jsx";
 import Appbar from "./Appbar.jsx";
-import AddCourse from "./AddCourse.jsx"
-import Courses from "./Courses.jsx"
-import Course from "./Course.jsx"
+import AddCourse from "./AddCourse.jsx";
+import Courses from "./Courses.jsx";
+import Course from "./Course.jsx";
 
 function App() {
 

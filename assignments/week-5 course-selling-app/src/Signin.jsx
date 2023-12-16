@@ -34,6 +34,23 @@ function Signin(){
                 <Button
                     variant="contained"
                     size={"large"}
+                    // onClick={() => {
+                    //     fetch("http://localhost:3000/admin/login", {
+                    //         method: "POST",
+                    //         body: JSON.stringify({
+                    //             username: email,
+                    //             password: password,
+                    //         }),
+                    //         headers: {
+                    //             "Content-type": "application/json"
+                    //         }
+                    //     }).then((response) => {
+                    //         response.json().then((data) => {
+                    //             localStorage.setItem("token", data.token);
+                    //             window.location = "/";
+                    //         });
+                    //     });
+                    // }}
                 >SignIn</Button>
             </Card>
         </div>
